@@ -7,10 +7,15 @@ const colors = {
   taskify25: "#E9EFEC", //Background color
 };
 
-// const styles = StyleSheet.create({
-//     colors:{
-//         BackgroundColor: "#E9EFEC",
-//     },
-// });
+const styles = StyleSheet.create({
+  centerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  debugBorder: {
+    borderColor: "red",
+    borderWidth: 1,
+  },
+});
 
-export default /* styles */ colors;
+export { styles, colors };

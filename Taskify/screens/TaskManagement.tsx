@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
-import TaskItem from '../Components/TaskItem';
+import TaskItem from '../components/TaskItem';
 
 export default function TaskManagement() {
 
