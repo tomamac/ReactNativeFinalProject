@@ -1,12 +1,12 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
-import { styles, colors } from "../styles/styles";
+import { colors, styles } from "../styles/styles";
 
-const HomeEmpty = () => {
+const TasksEmpty = () => {
   return (
     <View style={[styles.centerContainer, { marginVertical: "auto" }]}>
       <Image
-        source={require("../assets/HomeEmpty.png")}
+        source={require("../assets/TasksEmpty.png")}
         style={{
           width: "70%",
           height: undefined,
@@ -22,10 +22,10 @@ const HomeEmpty = () => {
           lineHeight: 40,
         }}
       >
-        What do you want to do today?{"\n"}Tap + to add your tasks
+        All your tasks will be stored here{"\n"}Tap + to add your tasks
       </Text>
     </View>
   );
 };
 
-export default HomeEmpty;
+export default TasksEmpty;

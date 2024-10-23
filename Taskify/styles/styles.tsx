@@ -16,6 +16,25 @@ const styles = StyleSheet.create({
     borderColor: "red",
     borderWidth: 1,
   },
+  debugBackground: {
+    backgroundColor: "red",
+  },
+  focusedTab: {
+    borderTopColor: colors.taskify100,
+    borderTopWidth: 2,
+    height: "100%",
+    width: "100%",
+    paddingTop: 16,
+    alignItems: "center",
+  },
+  unfocusedTab: {
+    borderTopColor: colors.taskify50,
+    borderTopWidth: 2,
+    height: "100%",
+    width: "100%",
+    paddingTop: 16,
+    alignItems: "center",
+  },
 });
 
 export { styles, colors };

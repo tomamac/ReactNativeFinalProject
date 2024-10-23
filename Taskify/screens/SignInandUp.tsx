@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity, Image } from 'react-native';
-import colors from '../../styles/styles';
+import { colors } from '../styles/styles';
 
 const SignInandUp = () => {
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/Logo.png')} style={styles.image} />
+      <Image source={require('../assets/Logo.png')} style={styles.image} />
       <Text style={styles.title}>TASKIFY</Text>
       <Text style={styles.subtitle}>Task Management & To-Do List</Text>
       <Text style={styles.description}>
