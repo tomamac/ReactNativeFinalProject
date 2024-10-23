@@ -6,8 +6,9 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { CheckBox } from "@rneui/themed";
+import { CheckBox, Divider } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
+import { colors } from "../styles/styles";
 
 const SignUpScreen = () => {
   type EmailError = string | null;
@@ -118,6 +119,7 @@ const SignUpScreen = () => {
         </TouchableOpacity>
       </View>
       <Text style={styles.orText}>Or with</Text>
+      <Divider style={{ width: "80%", alignSelf:'center' }} width={2} color={colors.taskify100} />
       <View style={styles.socialButtons}>
         <TouchableOpacity style={styles.socialButton}>
           <FontAwesome name="facebook" size={20} color="white" />
@@ -136,7 +138,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#E8F0F2",
+    backgroundColor: colors.taskify25,
   },
   header: {
     fontSize: 24,
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   form: {
-    backgroundColor: "#B0C4B1",
+    backgroundColor: colors.taskify50,
     borderRadius: 10,
     padding: 20,
   },
@@ -160,6 +162,7 @@ const styles = StyleSheet.create({
   input: {
     marginLeft: 10,
     height: 40,
+    width: "100%",
     borderColor: "gray",
   },
   checkboxContainer: {
@@ -189,15 +192,16 @@ const styles = StyleSheet.create({
   },
   socialButtons: {
     alignItems: "center",
+    paddingTop:30,
   },
   socialButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#2F4F4F",
+    backgroundColor: colors.taskify100,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 10,
     marginVertical: 5,
-    width: "80%",
+    width: "100%",
     justifyContent: "center",
   },
   socialButtonText: {
