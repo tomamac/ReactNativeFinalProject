@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity, Image } from 'react-native';
 import colors from '../../styles/styles';
 
-const LoginScreen = () => {
+const SignInandUp = () => {
   return (
     <View style={styles.container}>
       <Image source={require('../../assets/Logo.png')} style={styles.image} />
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default SignInandUp;
