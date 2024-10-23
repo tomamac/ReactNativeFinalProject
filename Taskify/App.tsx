@@ -1,19 +1,12 @@
-import { StatusBar } from "expo-status-bar";
 import {
-  Button,
   SafeAreaView,
-  Text,
-  TouchableOpacity,
   View,
 } from "react-native";
-import SignInandUp from "./screens/SignInandUp";
-import HomeEmpty from "./components/HomeEmpty";
 import { colors, styles } from "./styles/styles";
 import HomeScreen from "./screens/HomeScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import AddTaskButton from "./components/AddTaskButton";
 import CalendarScreen from "./screens/CalendarScreen";
 import TasksScreen from "./screens/TasksScreen";
 
@@ -81,7 +74,6 @@ export default function App() {
           <Tab.Screen name="Home3" component={HomeTab} />
         </Tab.Navigator>
       </NavigationContainer>
-      {/* <AddTaskButton /> */}
     </SafeAreaView>
   );
 }
