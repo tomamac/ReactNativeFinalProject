@@ -58,10 +58,10 @@ const ProfileScreen = () => {
         <Text style={{ fontSize: 24 }}>John Doe</Text>
       </View>
       <View style={{ marginTop: 30, width: "100%" }}>
-        <ProfileScreenButton iconName={"person-outline"} buttonText="Theme" />
+        <ProfileScreenButton iconName={"person-outline"} buttonText="Account" />
         <ProfileScreenButton
           iconName={"color-wand-outline"}
-          buttonText="Account"
+          buttonText="Theme"
         />
         <ProfileScreenButton iconName={"settings"} buttonText="Settings" />
         <Divider
