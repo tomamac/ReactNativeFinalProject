@@ -16,46 +16,40 @@ const TasksScreen = () => {
         paddingTop: 20,
       }}
     >
-      <View>
-        {/* Replace with View with textinput and icon and filter button
-        with position absolute placed inside textinput
-        see also: https://stackoverflow.com/questions/40935381/how-can-i-put-an-icon-inside-a-textinput-in-react-native
-      */}
-        <View
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginVertical: 10,
+          backgroundColor: colors.taskify50,
+          borderRadius: 50,
+          paddingHorizontal: 20,
+        }}
+      >
+        <TouchableOpacity
           style={{
-            flexDirection: "row",
+            width: 30,
+            height: 30,
             alignItems: "center",
-            marginVertical: 10,
-            backgroundColor: colors.taskify50,
-            borderRadius: 50,
-            paddingHorizontal: 20,
+            justifyContent: "center",
           }}
         >
-          <TouchableOpacity
-            style={{
-              width: 30,
-              height: 30,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Ionicons name={"filter"} size={25} color={colors.taskify100} />
-          </TouchableOpacity>
-          <TextInput
-            style={{
-              paddingLeft: 10,
-              height: 60,
-              width: "85%",
-              color: colors.taskify100,
-              fontSize: 16,
-            }}
-            value={searchTasks}
-            onChangeText={setSearchTasks}
-            placeholder="Search your tasks"
-            placeholderTextColor={colors.taskify100}
-          />
-          <FontAwesome name="search" size={20} color={colors.taskify100} />
-        </View>
+          <Ionicons name={"filter"} size={25} color={colors.taskify100} />
+        </TouchableOpacity>
+        <TextInput
+          style={{
+            paddingLeft: 10,
+            height: 60,
+            width: "85%",
+            color: colors.taskify100,
+            fontSize: 16,
+          }}
+          value={searchTasks}
+          onChangeText={setSearchTasks}
+          placeholder="Search your tasks"
+          placeholderTextColor={colors.taskify100}
+        />
+        <FontAwesome name="search" size={20} color={colors.taskify100} />
       </View>
 
       {/* If no tasks, show TasksEmpty */}

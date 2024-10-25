@@ -1,7 +1,4 @@
-import {
-  SafeAreaView,
-  View,
-} from "react-native";
+import { SafeAreaView, View } from "react-native";
 import { colors, styles } from "./styles/styles";
 import HomeScreen from "./screens/HomeScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,6 +9,7 @@ import TasksScreen from "./screens/TasksScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import TaskManagement from "./screens/TaskManagement";
+import ProfileScreen from "./screens/ProfileScreen";
 
 function HomeTab() {
   return <HomeScreen />;
@@ -25,9 +23,13 @@ function TasksTab() {
   return <TasksScreen />;
 }
 
+function ProfileTab() {
+  return <ProfileScreen />;
+}
+
 const Tab = createBottomTabNavigator();
 
-export default function App():React.JSX.Element {
+export default function App(): React.JSX.Element {
   return (
     <SafeAreaView
       style={{ flex: 1, paddingTop: 30, backgroundColor: colors.taskify25 }}
@@ -46,6 +48,8 @@ export default function App():React.JSX.Element {
                   : "calendar-number-outline";
               } else if (route.name === "Tasks") {
                 iconName = focused ? "clipboard" : "clipboard-outline";
+              } else if (route.name === "Profile") {
+                iconName = focused ? "person-circle" : "person-circle-outline";
               }
               // You can return any component that you like here!​
               return focused ? (
@@ -74,7 +78,7 @@ export default function App():React.JSX.Element {
           <Tab.Screen name="Home" component={HomeTab} />
           <Tab.Screen name="Calendar" component={CalendarTab} />
           <Tab.Screen name="Tasks" component={TasksTab} />
-          <Tab.Screen name="Home3" component={HomeTab} />
+          <Tab.Screen name="Profile" component={ProfileTab} />
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
