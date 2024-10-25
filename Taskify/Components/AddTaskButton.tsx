@@ -1,9 +1,15 @@
-import { View, Text, TouchableOpacity } from "react-native";
+// AddTaskButton.tsx
+
+import { TouchableOpacity } from "react-native";
 import React from "react";
 import { colors, styles } from "../styles/styles";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const AddTaskButton = () => {
+interface AddTaskButtonProps {
+  onPress: () => void;
+}
+
+const AddTaskButton: React.FC<AddTaskButtonProps> = ({ onPress }) => {
   return (
     <TouchableOpacity
       style={[
@@ -18,6 +24,7 @@ const AddTaskButton = () => {
           height: 60,
         },
       ]}
+      onPress={onPress} // เพิ่ม onPress เพื่อเรียกฟังก์ชันเปิด Modal
     >
       <Ionicons name={"add"} size={30} color={colors.taskify25} />
     </TouchableOpacity>
