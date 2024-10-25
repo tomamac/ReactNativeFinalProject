@@ -1,12 +1,25 @@
+// TasksScreen.tsx
+
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { colors, styles } from "../styles/styles";
 import TasksEmpty from "../components/TasksEmpty";
 import AddTaskButton from "../components/AddTaskButton";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import TaskModal from "../components/TaskModal"; // นำเข้า TaskModal
 
 const TasksScreen = () => {
   const [searchTasks, setSearchTasks] = useState("");
+  const [isModalVisible, setModalVisible] = useState(false); // สร้างสถานะสำหรับ Modal
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <View
       style={{
@@ -54,7 +67,12 @@ const TasksScreen = () => {
 
       {/* If no tasks, show TasksEmpty */}
       <TasksEmpty />
-      <AddTaskButton />
+
+      {/* แสดง TaskModal */}
+      <TaskModal visible={isModalVisible} onClose={closeModal} />
+
+      {/* ส่งฟังก์ชัน openModal ไปยัง AddTaskButton */}
+      <AddTaskButton onPress={openModal} />
     </View>
   );
 };

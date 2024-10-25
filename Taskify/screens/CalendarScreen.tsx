@@ -1,3 +1,5 @@
+// CalendarScreen.tsx
+
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { calendarTheme, colors, styles } from "../styles/styles";
@@ -10,10 +12,13 @@ import {
   ExpandableCalendar,
 } from "react-native-calendars";
 import { DayCalculation } from "../function/DayCalculation";
+import TaskModal from "../components/TaskModal"; // นำเข้า TaskModal
 
 const CalendarScreen = (): React.JSX.Element => {
   const today = moment().format("YYYY-MM-DD");
   const [selectedDate, setSelectedDate] = useState(today);
+  const [isModalVisible, setModalVisible] = useState(false); // สร้างสถานะสำหรับ Modal
+
   const renderHeader = (date: any) => {
     return (
       <TouchableOpacity
@@ -30,6 +35,15 @@ const CalendarScreen = (): React.JSX.Element => {
         </Text>
       </TouchableOpacity>
     );
+  };
+
+  // ฟังก์ชันสำหรับเปิดและปิด Modal
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   return (
@@ -78,7 +92,11 @@ const CalendarScreen = (): React.JSX.Element => {
         <CalendarEmpty />
       </CalendarProvider>
 
-      <AddTaskButton />
+      {/* แสดง TaskModal */}
+      <TaskModal visible={isModalVisible} onClose={closeModal} />
+
+      {/* ส่งฟังก์ชัน openModal ไปยัง AddTaskButton */}
+      <AddTaskButton onPress={openModal} />
     </View>
   );
 };
