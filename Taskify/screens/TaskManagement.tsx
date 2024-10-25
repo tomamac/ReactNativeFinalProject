@@ -26,10 +26,6 @@ export default function TaskManagement() {
     setTaskList(tasksList.map((tasks, i) => i === index ? { ...tasks, completed: !tasks.completed } : tasks));
   };
 
-  if (!fontsLoaded) {
-    return <View style={styles.container}></View>;
-  }
-
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Task Management</Text>

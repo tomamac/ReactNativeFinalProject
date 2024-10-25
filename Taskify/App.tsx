@@ -10,6 +10,8 @@ import WelcomeScreen from "./screens/WelcomeScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import TaskManagement from "./screens/TaskManagement";
 import ProfileScreen from "./screens/ProfileScreen";
+import { UserProvider } from "./context/useAuth";
+import { ToastContainer } from "react-toastify";
 
 function HomeTab() {
   return <HomeScreen />;
@@ -82,6 +84,9 @@ export default function App(): React.JSX.Element {
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
+    // <UserProvider>
+    //   <ToastContainer />
+    // </UserProvider>
     // <SignUpScreen />
   );
 }
