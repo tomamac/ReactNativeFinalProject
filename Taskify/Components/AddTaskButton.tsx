@@ -8,8 +8,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 interface AddTaskButtonProps {
   onPress: () => void;
 }
-
-const AddTaskButton: React.FC<AddTaskButtonProps> = ({ onPress }) => {
+const AddTaskButton = ({ onPress }: AddTaskButtonProps) => {
   return (
     <TouchableOpacity
       style={[

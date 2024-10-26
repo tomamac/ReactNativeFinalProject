@@ -28,6 +28,7 @@ const ProfileScreen = () => {
         <Image
           source={require("../assets/CalendarEmpty.png")}
           style={[
+            // ทำเสร็จแล้วอย่าลืมเอาออก (debugBorder)
             styles.debugBorder,
             {
               width: 90,
@@ -47,15 +48,15 @@ const ProfileScreen = () => {
             justifyContent: "center",
             backgroundColor: "white",
             borderRadius: 50,
-            position:'absolute',
-            right:0,
-            bottom:30,
+            position: "absolute",
+            right: 0,
+            bottom: 30,
           }}
         >
           <Ionicons name={"pencil"} size={20} color={colors.taskify100} />
         </TouchableOpacity>
 
-        <Text style={{ fontSize: 24 }}>John Doe</Text>
+        <Text style={{ fontSize: 24, color:colors.taskify100, fontWeight:'500' }}>John Doe</Text>
       </View>
       <View style={{ marginTop: 30, width: "100%" }}>
         <ProfileScreenButton iconName={"person-outline"} buttonText="Account" />

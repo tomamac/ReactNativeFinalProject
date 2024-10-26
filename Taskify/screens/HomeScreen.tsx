@@ -1,10 +1,21 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { colors, styles } from "../styles/styles";
 import HomeEmpty from "../components/HomeEmpty";
 import AddTaskButton from "../components/AddTaskButton";
+import TaskModal from "../components/TaskModal";
 
 const HomeScreen = () => {
+  const [isModalVisible, setModalVisible] = useState(false); // สร้างสถานะสำหรับ Modal
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <View
       style={{
@@ -22,7 +33,12 @@ const HomeScreen = () => {
 
       {/* If no tasks, show HomeEmpty */}
       <HomeEmpty />
-      <AddTaskButton />
+
+      {/* แสดง TaskModal */}
+      <TaskModal visible={isModalVisible} onClose={closeModal} />
+
+      {/* ส่งฟังก์ชัน openModal ไปยัง AddTaskButton */}
+      <AddTaskButton onPress={openModal} />
     </View>
   );
 };
