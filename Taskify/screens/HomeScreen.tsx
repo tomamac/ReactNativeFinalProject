@@ -8,8 +8,9 @@ import TaskItem from '../components/TaskItem';
 
 const HomeScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [tasksList, setTaskList] = useState<{ text: string; description: string ;completed: boolean }[]>([]);
+  const [tasksList, setTaskList] = useState<{ text: string; description: string; completed: boolean, priority: string }[]>([]);
   const [taskName, setTaskName] = useState<string>('');
+  const [priority, setPriority] = useState<string>('');
 
   const openModal = () => {
     setModalVisible(true);
@@ -19,9 +20,9 @@ const HomeScreen = () => {
     setModalVisible(false);
   };
 
-  const addTask = (taskName: string, description: string) => {
-    if(taskName.trim()){
-      setTaskList([...tasksList, { text: taskName, description: description, completed: false }]);
+  const addTask = (taskName: string, description: string , priority: string) => {
+    if (taskName.trim()) {
+      setTaskList([...tasksList, { text: taskName, description: description, completed: false, priority }]);
       setTaskName('')
     }
     closeModal();
@@ -34,8 +35,7 @@ const HomeScreen = () => {
   const deleteTask = (index: number) => {
     setTaskList(tasksList.filter((_, i) => i !== index));
   };
-
-
+  
   return (
     <View
       style={{
@@ -55,12 +55,13 @@ const HomeScreen = () => {
       ) : (
         <FlatList
           data={tasksList}
-          renderItem={({ item , index }) => (
+          renderItem={({ item, index }) => (
             <TaskItem
               task={item}
               index={index}
               toggleTaskCompletion={toggleTaskCompletion}
               deleteTask={deleteTask}
+              priority={item.priority}
             />
           )}
           keyExtractor={(item, index) => index.toString()}

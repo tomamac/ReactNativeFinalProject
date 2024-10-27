@@ -7,18 +7,18 @@ interface PriorityModalProps {
     visible: boolean;
     onClose: () => void;
     onSelectPriority: (priority: string) => void;
-  }
+}
 
 const PriorityModal: React.FC<PriorityModalProps> = ({ visible, onClose, onSelectPriority }) => {
     const priorities = [
-        { label: 'High', color: colors.highPriority},
+        { label: 'High', color: colors.highPriority },
         { label: 'Medium', color: colors.mediumPriority },
         { label: 'Low', color: colors.lowPriority },
         { label: 'Unimportant', color: colors.unimportantPriority },
     ];
-
+    
     return (
-        <Modal visible={visible} transparent animationType="slide">
+        <Modal visible={visible} transparent animationType="fade">
             <View style={styles.modalBackground}>
                 <View style={styles.modalContainer}>
                     {priorities.map((priority) => (

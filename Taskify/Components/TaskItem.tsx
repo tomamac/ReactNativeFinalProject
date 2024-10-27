@@ -2,12 +2,16 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { colors } from "../styles/styles";
+import TaskModal from "./TaskModal";
+import PriorityModal from "./PriorityModal";
 
 interface TaskItemProps {
   task: { text: string; completed: boolean };
   index: number;
   toggleTaskCompletion: (index: number) => void;
   deleteTask: (index: number) => void;
+
+  priority: string;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({
@@ -15,6 +19,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
   index,
   toggleTaskCompletion,
   deleteTask,
+  priority,
 }) => {
   return (
     <View style={styles.taskContainer}>
@@ -43,7 +48,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
             <Text style={styles.taskTime}>Today At 16:45</Text>
           </View>
           <View style={styles.priorityBadge}>
-            <Text style={styles.priorityText}>High</Text>
+            <Text style={styles.priorityText}>{priority}</Text>
           </View>
         </View>
       </View>

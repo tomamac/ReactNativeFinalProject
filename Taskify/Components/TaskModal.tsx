@@ -16,13 +16,12 @@ import PriorityModal from "./PriorityModal";
 interface TaskModalProps {
   visible: boolean;
   onClose: () => void;
-  onSave: (taskName: string, description: string) => void; // New prop
+  onSave: (taskName: string, description: string, priority: string) => void; // New prop
 }
 
 const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
   const [taskName, setTaskName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [selectedDay, setSelectedDay] = useState<string>("");
   const [date, setDate] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState(false);
 
@@ -35,7 +34,7 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
 
   const handleSave = () => {
     if (taskName.trim() && description.trim()) {
-      onSave(taskName, description); // Pass data back to parent
+      onSave(taskName, description, priority); // Pass data back to parent
       setTaskName("");
       setDescription("");
       onClose();
@@ -71,6 +70,12 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
         is24Hour={true}
         onChange={handleDateChange}
         value={date || new Date()} />}
+      {/* PriorityModal */}
+      <PriorityModal
+        visible={isPriorityModalVisible}
+        onClose={closePriorityModal}
+        onSelectPriority={handleSelectPriority}
+      />
       <View style={styles.modalBackground}>
         <TouchableOpacity
           style={{ flex: 1, width: "100%" }}
@@ -79,7 +84,7 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
         <View style={styles.modalContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Input Task Name"
+            placeholder="Name Task"
             value={taskName}
             onChangeText={setTaskName}
             ref={inputRef}
@@ -106,12 +111,8 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
                   size={24}
                   color={colors.taskify100}
                 />
+                <Text style={styles.iconText}>{priority}</Text>
               </TouchableOpacity>
-              <PriorityModal
-                visible={isPriorityModalVisible}
-                onClose={closePriorityModal}
-                onSelectPriority={handleSelectPriority}
-              />
             </View>
             <TouchableOpacity
               style={styles.iconButtonRight}
