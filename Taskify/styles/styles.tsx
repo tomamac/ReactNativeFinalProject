@@ -6,6 +6,10 @@ const colors = {
   taskify75: "#6A9C89", //Secondary Buttons, Highlight
   taskify50: "#C4DAD2", //Component Background color
   taskify25: "#E9EFEC", //Background color
+  highPriority: "#B3261E", //High Priority
+  mediumPriority: "#B5710B", //Medium Priority
+  lowPriority: "#0753E7", //Low Priority
+  unimportantPriority: "#79747E", //Unimportant Priority
 };
 
 const styles = StyleSheet.create({

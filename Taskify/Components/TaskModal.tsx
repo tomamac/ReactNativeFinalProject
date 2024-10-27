@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../styles/styles";
-import DateTimePicker , { DateTimePickerEvent } from '@react-native-community/datetimepicker'
-import { current } from "@reduxjs/toolkit";
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import PriorityModal from "./PriorityModal";
 
 interface TaskModalProps {
   visible: boolean;
@@ -26,6 +26,13 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
   const [date, setDate] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState(false);
 
+  const openPriorityModal = () => setPriorityModalVisible(true);
+  const closePriorityModal = () => setPriorityModalVisible(false);
+  const handleSelectPriority = (selectedPriority: string) => setPriority(selectedPriority);
+
+  const [isPriorityModalVisible, setPriorityModalVisible] = useState(false);
+  const [priority, setPriority] = useState<string>('Unimportant');
+
   const handleSave = () => {
     if (taskName.trim() && description.trim()) {
       onSave(taskName, description); // Pass data back to parent
@@ -36,7 +43,7 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
   };
 
   const handleDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if(event.type === 'set'){
+    if (event.type === 'set') {
       const currentDate = selectedDate || date
       console.log(currentDate);
       setDate(currentDate);
@@ -60,10 +67,10 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
       }}
     >
       {showPicker && <DateTimePicker
-      mode="date"
-      is24Hour={true}
-      onChange={handleDateChange}
-      value={date || new Date()}/>}
+        mode="date"
+        is24Hour={true}
+        onChange={handleDateChange}
+        value={date || new Date()} />}
       <View style={styles.modalBackground}>
         <TouchableOpacity
           style={{ flex: 1, width: "100%" }}
@@ -93,13 +100,18 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
                 />
                 <Text style={styles.iconText}>{date ? date.toLocaleDateString('en-US', { weekday: 'short' }) : ''}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconButton}>
+              <TouchableOpacity style={styles.iconButton} onPress={openPriorityModal}>
                 <Ionicons
                   name="bookmark-outline"
                   size={24}
                   color={colors.taskify100}
                 />
               </TouchableOpacity>
+              <PriorityModal
+                visible={isPriorityModalVisible}
+                onClose={closePriorityModal}
+                onSelectPriority={handleSelectPriority}
+              />
             </View>
             <TouchableOpacity
               style={styles.iconButtonRight}
