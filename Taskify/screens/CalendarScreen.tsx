@@ -1,8 +1,6 @@
-// CalendarScreen.tsx
-
-import { View, Text, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { calendarTheme, colors, styles } from "../styles/styles";
+import React, { useState, useContext } from "react";
+import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { calendarTheme, colors } from "../styles/styles";
 import CalendarEmpty from "../components/CalendarEmpty";
 import AddTaskButton from "../components/AddTaskButton";
 import moment from "moment";
@@ -12,12 +10,15 @@ import {
   ExpandableCalendar,
 } from "react-native-calendars";
 import { DayCalculation } from "../function/DayCalculation";
-import TaskModal from "../components/TaskModal"; // นำเข้า TaskModal
+import TaskModal from "../components/TaskModal";
+import TaskItem from "../components/TaskItem";
+import { TasksContext } from "../components/TaskContext";
 
 const CalendarScreen = (): React.JSX.Element => {
+  const { tasksList, addTask, toggleTaskCompletion, deleteTask } = useContext(TasksContext)!;
   const today = moment().format("YYYY-MM-DD");
   const [selectedDate, setSelectedDate] = useState(today);
-  const [isModalVisible, setModalVisible] = useState(false); // สร้างสถานะสำหรับ Modal
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const renderHeader = (date: any) => {
     return (
@@ -37,7 +38,6 @@ const CalendarScreen = (): React.JSX.Element => {
     );
   };
 
-  // ฟังก์ชันสำหรับเปิดและปิด Modal
   const openModal = () => {
     setModalVisible(true);
   };
@@ -45,6 +45,16 @@ const CalendarScreen = (): React.JSX.Element => {
   const closeModal = () => {
     setModalVisible(false);
   };
+
+  const handleAddTask = (taskName: string, description: string, priority: string, date: Date | null) => {
+    addTask(taskName, description, priority, date || new Date(selectedDate));
+    closeModal();
+  };
+
+  const tasksForSelectedDate = tasksList.filter(task => {
+    if (!task.date) return false;
+    return moment(task.date).format('YYYY-MM-DD') === selectedDate;
+  });
 
   return (
     <View
@@ -54,7 +64,6 @@ const CalendarScreen = (): React.JSX.Element => {
         paddingTop: 20,
       }}
     >
-      {/*https://wix.github.io/react-native-calendars/docs/Intro*/}
       <CalendarProvider
         date={selectedDate}
         onMonthChange={(day: DateData) =>
@@ -86,16 +95,27 @@ const CalendarScreen = (): React.JSX.Element => {
           }}
           hideArrows={true}
         />
-
-        {/* If no tasks, show CalendarEmpty */}
-
-        <CalendarEmpty />
+        <View style={{ marginTop: 30 ,marginHorizontal: 20}}>
+        {tasksForSelectedDate.length === 0 ? (
+          <CalendarEmpty />
+        ) : (
+          <FlatList
+            data={tasksForSelectedDate}
+            renderItem={({ item }) => (
+              <TaskItem
+                task={item}
+                toggleTaskCompletion={toggleTaskCompletion}
+                deleteTask={deleteTask}
+              />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        )}
+        </View>
       </CalendarProvider>
 
-      {/* แสดง TaskModal */}
-      <TaskModal visible={isModalVisible} onClose={closeModal} />
+      <TaskModal visible={isModalVisible} onClose={closeModal} onSave={handleAddTask} />
 
-      {/* ส่งฟังก์ชัน openModal ไปยัง AddTaskButton */}
       <AddTaskButton onPress={openModal} />
     </View>
   );

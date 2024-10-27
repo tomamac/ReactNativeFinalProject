@@ -6,23 +6,60 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../styles/styles";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+import PriorityModal from "./PriorityModal";
 
 interface TaskModalProps {
   visible: boolean;
   onClose: () => void;
+  onSave: (
+    taskName: string,
+    description: string,
+    priority: string,
+    date: Date | null
+  ) => void;
 }
 
-const TaskModal = ({ visible, onClose }: TaskModalProps) => {
+const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
   const [taskName, setTaskName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [selectedDay, setSelectedDay] = useState<string>("Sun.");
+  const [date, setDate] = useState<Date | null>(null);
+  const [showPicker, setShowPicker] = useState(false);
+
+  const openPriorityModal = () => setPriorityModalVisible(true);
+  const closePriorityModal = () => setPriorityModalVisible(false);
+  const handleSelectPriority = (selectedPriority: string) =>
+    setPriority(selectedPriority);
+
+  const [isPriorityModalVisible, setPriorityModalVisible] = useState(false);
+  const [priority, setPriority] = useState<string>("Unimportant");
 
   const handleSave = () => {
-    // save task
-    onClose();
+    if (taskName.trim() && description.trim()) {
+      onSave(taskName, description, priority, date);
+      setTaskName("");
+      setDescription("");
+      setDate(null);
+      setPriority("Unimportant");
+      onClose();
+    }
+  };
+
+  const handleDateChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date
+  ) => {
+    if (event.type === "set") {
+      const currentDate = selectedDate || date;
+      setDate(currentDate);
+    }
+    setShowPicker(false);
   };
 
   const inputRef = React.useRef<any>();
@@ -30,7 +67,7 @@ const TaskModal = ({ visible, onClose }: TaskModalProps) => {
   return (
     <Modal
       visible={visible}
-      animationType="slide" // ใช้ slide เพื่อให้โมดอลเลื่อนขึ้นจากล่าง
+      animationType="slide"
       transparent={true}
       onRequestClose={onClose}
       onShow={() => {
@@ -40,6 +77,20 @@ const TaskModal = ({ visible, onClose }: TaskModalProps) => {
         }, 50);
       }}
     >
+      {showPicker && (
+        <DateTimePicker
+          mode="date"
+          is24Hour={true}
+          onChange={handleDateChange}
+          value={date || new Date()}
+        />
+      )}
+      {/* PriorityModal */}
+      <PriorityModal
+        visible={isPriorityModalVisible}
+        onClose={closePriorityModal}
+        onSelectPriority={handleSelectPriority}
+      />
       <View style={styles.modalBackground}>
         <TouchableOpacity
           style={{ flex: 1, width: "100%" }}
@@ -48,7 +99,7 @@ const TaskModal = ({ visible, onClose }: TaskModalProps) => {
         <View style={styles.modalContainer}>
           <TextInput
             style={styles.input}
-            placeholder="Input Task Name"
+            placeholder="Name Task"
             value={taskName}
             onChangeText={setTaskName}
             ref={inputRef}
@@ -59,27 +110,35 @@ const TaskModal = ({ visible, onClose }: TaskModalProps) => {
             value={description}
             onChangeText={setDescription}
           />
-
           <View style={styles.iconContainer}>
             <View style={styles.leftIcons}>
-              <TouchableOpacity style={styles.iconButton}>
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => setShowPicker(true)}
+              >
                 <Ionicons
                   name="calendar-outline"
                   size={24}
                   color={colors.taskify100}
                 />
-                <Text style={styles.iconText}>{selectedDay}</Text>
+                <Text style={styles.iconText}>
+                  {date
+                    ? date.toLocaleDateString("en-US", { weekday: "short" })
+                    : ""}
+                </Text>
               </TouchableOpacity>
-
-              <TouchableOpacity style={styles.iconButton}>
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={openPriorityModal}
+              >
                 <Ionicons
                   name="bookmark-outline"
                   size={24}
                   color={colors.taskify100}
                 />
+                <Text style={styles.iconText}>{priority}</Text>
               </TouchableOpacity>
             </View>
-
             <TouchableOpacity
               style={styles.iconButtonRight}
               onPress={handleSave}

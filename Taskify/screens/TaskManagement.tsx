@@ -1,38 +1,26 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList, StatusBar } from 'react-native';
 import TaskItem from '../components/TaskItem';
 
-export default function TaskManagement() {
-
-  const [tasksList, setTaskList] = useState<{
-    text: string;
-    completed: boolean
-  }[]>([]);
+function TaskManagement() {
+  const [tasksList, setTaskList] = useState<{ text: string; completed: boolean }[]>([]);
   const [taskName, setTaskName] = useState<string>('');
 
   const addTask = () => {
-    if (taskName.length > 0 && taskName.trim() !== '') {
+    if (taskName.trim()) {
       setTaskList([...tasksList, { text: taskName, completed: false }]);
       setTaskName('');
     }
   };
 
-  const deleteTask = (index: number) => {
-    setTaskList(tasksList.filter((_, item) => item !== index));
-  };
-
   const toggleTaskCompletion = (index: number) => {
-    setTaskList(tasksList.map((tasks, i) => i === index ? { ...tasks, completed: !tasks.completed } : tasks));
+    setTaskList(tasksList.map((task, i) => i === index ? { ...task, completed: !task.completed } : task));
   };
-
-  if (!fontsLoaded) {
-    return <View style={styles.container}></View>;
-  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Task Management</Text>
+      <Text style={styles.header}>Hello, John Doe</Text>
+      <Text style={styles.subHeader}>Your Task, Today</Text>
       <TextInput
         style={styles.input}
         placeholder="Add a new task"
@@ -42,7 +30,7 @@ export default function TaskManagement() {
         returnKeyType="done"
         blurOnSubmit={true}
       />
-      <Button title="Add Task" onPress={addTask}/>
+      <Button title="Add Task" onPress={addTask} />
       <FlatList
         data={tasksList}
         renderItem={({ item, index }) => (
@@ -50,12 +38,10 @@ export default function TaskManagement() {
             task={item}
             index={index}
             toggleTaskCompletion={toggleTaskCompletion}
-            deleteTask={deleteTask}
           />
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -63,26 +49,24 @@ export default function TaskManagement() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+    padding: 16,
+    backgroundColor: '#f0f4f8',
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 60,
-    color: 'black',
-    fontFamily: 'WorkSans',
-    textAlign: 'center',
+  },
+  subHeader: {
+    fontSize: 16,
+    marginVertical: 8,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    width: '100%',
+    borderColor: '#ccc',
+    padding: 8,
+    marginBottom: 16,
+    borderRadius: 4,
   },
 });
+
+export default TaskManagement;
