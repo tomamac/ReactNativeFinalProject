@@ -36,51 +36,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     alignItems: "center",
   },
-  taskCard: {
-    backgroundColor: '#1b3b36',
-    borderRadius: 12,
-    marginVertical: 8,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  taskHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  taskHeaderText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  taskInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  taskText: {
-    color: '#fff',
-    fontSize: 14,
-    textDecorationLine: 'line-through', // Optional for completed tasks
-  },
-  taskTime: {
-    color: '#888',
-    fontSize: 12,
-    marginLeft: 8,
-  },
-  priorityBadge: {
-    backgroundColor: '#00695c',
-    borderRadius: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
-  priorityText: {
-    color: '#fff',
-    fontSize: 12,
-  }
 });
 
 function calendarTheme(): Theme {

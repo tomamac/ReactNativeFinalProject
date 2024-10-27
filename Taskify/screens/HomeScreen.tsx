@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { colors, styles } from '../styles/styles';
 import TaskModal from '../components/TaskModal';
 import AddTaskButton from '../components/AddTaskButton';
 import HomeEmpty from '../components/HomeEmpty';
+import TaskItem from '../components/TaskItem';
 
 const HomeScreen = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [tasks, setTasks] = useState<{ name: string; description: string }[]>([]);
+  const [tasksList, setTaskList] = useState<{ text: string; description: string ;completed: boolean }[]>([]);
+  const [taskName, setTaskName] = useState<string>('');
 
   const openModal = () => {
     setModalVisible(true);
@@ -17,10 +19,22 @@ const HomeScreen = () => {
     setModalVisible(false);
   };
 
-  const handleAddTask = (taskName: string, description: string) => {
-    setTasks([...tasks, { name: taskName, description }]);
+  const addTask = (taskName: string, description: string) => {
+    if(taskName.trim()){
+      setTaskList([...tasksList, { text: taskName, description: description, completed: false }]);
+      setTaskName('')
+    }
     closeModal();
   };
+
+  const toggleTaskCompletion = (index: number) => {
+    setTaskList(tasksList.map((task, i) => i === index ? { ...task, completed: !task.completed } : task));
+  };
+
+  const deleteTask = (index: number) => {
+    setTaskList(tasksList.filter((_, i) => i !== index));
+  };
+
 
   return (
     <View
@@ -36,19 +50,24 @@ const HomeScreen = () => {
         <Text style={{ fontSize: 24, fontWeight: 'bold' }}>John Doe</Text>
       </View>
 
-      {tasks.length === 0 ? (
+      {tasksList.length === 0 ? (
         <HomeEmpty />
       ) : (
-        tasks.map((task, index) => (
-          <View key={index} style={styles.taskCard}>
-            <Text style={styles.taskHeader}>{task.name}</Text>
-            <Text style={styles.taskHeaderText}>{task.description}</Text>
-          </View>
-        ))
+        <FlatList
+          data={tasksList}
+          renderItem={({ item , index }) => (
+            <TaskItem
+              task={item}
+              index={index}
+              toggleTaskCompletion={toggleTaskCompletion}
+              deleteTask={deleteTask}
+            />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
       )}
 
-      <TaskModal visible={isModalVisible} onClose={closeModal} onSave={handleAddTask} />
-
+      <TaskModal visible={isModalVisible} onClose={closeModal} onSave={addTask} />
       <AddTaskButton onPress={openModal} />
     </View>
   );
