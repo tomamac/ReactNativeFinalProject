@@ -1,5 +1,3 @@
-// AddTaskButton.tsx
-
 import { TouchableOpacity } from "react-native";
 import React from "react";
 import { colors, styles } from "../styles/styles";

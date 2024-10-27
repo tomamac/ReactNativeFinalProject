@@ -60,7 +60,7 @@ function calendarTheme(): Theme {
     // monthTextColor: "blue",
     indicatorColor: "blue",
     textDayHeaderFontWeight: 'bold',
-    textDayHeaderFontSize: 16,
+    textDayHeaderFontSize: 14,
     // textDayFontFamily: "monospace",
     // textMonthFontFamily: "monospace",
     // textDayHeaderFontFamily: "monospace",

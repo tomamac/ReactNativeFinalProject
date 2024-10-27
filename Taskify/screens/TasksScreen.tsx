@@ -1,20 +1,19 @@
-import { View, Text, TextInput, TouchableOpacity, FlatList } from "react-native";
-import React, { useState } from "react";
-import { colors, styles } from "../styles/styles";
+import React, { useState, useContext } from "react";
+import { View, TextInput, TouchableOpacity, FlatList } from "react-native";
+import { colors } from "../styles/styles";
 import TasksEmpty from "../components/TasksEmpty";
 import AddTaskButton from "../components/AddTaskButton";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import TaskModal from "../components/TaskModal";
 import TaskItem from "../components/TaskItem";
 import FilterModal from "../components/FliterModal";
+import { TasksContext } from "../components/TaskContext";
 
 const TasksScreen = () => {
+  const { tasksList, addTask, toggleTaskCompletion, deleteTask } = useContext(TasksContext)!;
   const [searchTasks, setSearchTasks] = useState<string>('');
   const [isModalVisible, setModalVisible] = useState(false);
-  const [tasksList, setTaskList] = useState<{ text: string; description: string; completed: boolean, priority: string }[]>([]);
-  const [taskName, setTaskName] = useState<string>('');
   const [isFilterModalVisible, setFilterModalVisible] = useState(false);
-
 
   const openModal = () => {
     setModalVisible(true);
@@ -32,20 +31,9 @@ const TasksScreen = () => {
     setFilterModalVisible(false);
   };
 
-  const addTask = (taskName: string, description: string, priority: string) => {
-    if (taskName.trim()) {
-      setTaskList([...tasksList, { text: taskName, description: description, completed: false, priority }]);
-      setTaskName('')
-    }
+  const handleAddTask = (taskName: string, description: string, priority: string, date: Date | null) => {
+    addTask(taskName, description, priority, date);
     closeModal();
-  };
-
-  const toggleTaskCompletion = (index: number) => {
-    setTaskList(tasksList.map((task, i) => i === index ? { ...task, completed: !task.completed } : task));
-  };
-
-  const deleteTask = (index: number) => {
-    setTaskList(tasksList.filter((_, i) => i !== index));
   };
 
   const filteredTasks = tasksList.filter(task =>
@@ -104,20 +92,18 @@ const TasksScreen = () => {
       ) : (
         <FlatList
           data={filteredTasks}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <TaskItem
               task={item}
-              index={index}
               toggleTaskCompletion={toggleTaskCompletion}
               deleteTask={deleteTask}
-              priority={item.priority}
             />
           )}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.id}
         />
       )}
 
-      <TaskModal visible={isModalVisible} onClose={closeModal} onSave={addTask} />
+      <TaskModal visible={isModalVisible} onClose={closeModal} onSave={handleAddTask} />
 
       <AddTaskButton onPress={openModal} />
     </View>

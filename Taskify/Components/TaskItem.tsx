@@ -2,32 +2,38 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { colors } from "../styles/styles";
-import TaskModal from "./TaskModal";
-import PriorityModal from "./PriorityModal";
+import moment from "moment";
+import { Ionicons } from "@expo/vector-icons";
+
+interface Task {
+  id: string;
+  text: string;
+  description: string;
+  completed: boolean;
+  priority: string;
+  date: Date | null;
+}
 
 interface TaskItemProps {
-  task: { text: string; completed: boolean };
-  index: number;
-  toggleTaskCompletion: (index: number) => void;
-  deleteTask: (index: number) => void;
-
-  priority: string;
+  task: Task;
+  toggleTaskCompletion: (id: string) => void;
+  deleteTask: (id: string) => void;
 }
 
 const TaskItem: React.FC<TaskItemProps> = ({
   task,
-  index,
   toggleTaskCompletion,
   deleteTask,
-  priority,
 }) => {
   return (
     <View style={styles.taskContainer}>
       {/* Header ของ Task */}
       <View style={styles.taskHeader}>
-        <Text style={styles.taskHeaderText}>In Progress (1 Task)</Text>
-        <TouchableOpacity onPress={() => deleteTask(index)}>
-          <Text style={styles.taskHeaderText}>X</Text>
+        <Text style={styles.taskHeaderText}>
+          {task.completed ? "Finished" : "In Progress"}
+        </Text>
+        <TouchableOpacity onPress={() => deleteTask(task.id)}>
+          <Ionicons name="close" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
 
@@ -36,7 +42,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
         <View style={styles.taskInfo}>
           <Checkbox
             status={task.completed ? "checked" : "unchecked"}
-            onPress={() => toggleTaskCompletion(index)}
+            onPress={() => toggleTaskCompletion(task.id)}
             color="#1b3b36"
           />
           <View style={styles.taskDetails}>
@@ -45,10 +51,12 @@ const TaskItem: React.FC<TaskItemProps> = ({
             >
               {task.text}
             </Text>
-            <Text style={styles.taskTime}>Today At 16:45</Text>
+            <Text style={styles.taskTime}>
+              {task.date ? moment(task.date).format("MMM D, YYYY") : ""}
+            </Text>
           </View>
           <View style={styles.priorityBadge}>
-            <Text style={styles.priorityText}>{priority}</Text>
+            <Text style={styles.priorityText}>{task.priority}</Text>
           </View>
         </View>
       </View>
@@ -58,15 +66,15 @@ const TaskItem: React.FC<TaskItemProps> = ({
 
 const styles = StyleSheet.create({
   taskContainer: {
-    backgroundColor: "#E9ECEF", // สีพื้นหลังอ่อนๆ สำหรับกรอบนอก
+    backgroundColor: "#E9ECEF",
     borderRadius: 10,
     marginVertical: 8,
     paddingBottom: 10,
-    borderColor: "#CBD5E0", // สีเทาอ่อนสำหรับเส้นขอบกรอบนอก
+    borderColor: "#CBD5E0",
     borderWidth: 1,
   },
   taskHeader: {
-    backgroundColor: "#1b3b36", // สีพื้นหลังของ header
+    backgroundColor: "#1b3b36",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     flexDirection: "row",
@@ -103,18 +111,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
   },
-
   taskDetails: {
-    // เพิ่มส่วนนี้เพื่อกำหนดสไตล์ของ taskDetails
-    flex: 1, // ให้ taskDetails ขยายเต็มพื้นที่ที่เหลือ
+    flex: 1,
   },
-
   priorityBadge: {
     backgroundColor: "#1b3b36",
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    marginLeft: "auto", // จัดปุ่ม Priority ไปทางขวาสุด
+    marginLeft: "auto",
   },
   priorityText: {
     color: "#fff",

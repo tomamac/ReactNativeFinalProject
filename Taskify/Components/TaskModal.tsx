@@ -10,13 +10,20 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../styles/styles";
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 import PriorityModal from "./PriorityModal";
 
 interface TaskModalProps {
   visible: boolean;
   onClose: () => void;
-  onSave: (taskName: string, description: string, priority: string) => void; // New prop
+  onSave: (
+    taskName: string,
+    description: string,
+    priority: string,
+    date: Date | null
+  ) => void;
 }
 
 const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
@@ -27,28 +34,33 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
 
   const openPriorityModal = () => setPriorityModalVisible(true);
   const closePriorityModal = () => setPriorityModalVisible(false);
-  const handleSelectPriority = (selectedPriority: string) => setPriority(selectedPriority);
+  const handleSelectPriority = (selectedPriority: string) =>
+    setPriority(selectedPriority);
 
   const [isPriorityModalVisible, setPriorityModalVisible] = useState(false);
-  const [priority, setPriority] = useState<string>('Unimportant');
+  const [priority, setPriority] = useState<string>("Unimportant");
 
   const handleSave = () => {
     if (taskName.trim() && description.trim()) {
-      onSave(taskName, description, priority); // Pass data back to parent
+      onSave(taskName, description, priority, date);
       setTaskName("");
       setDescription("");
+      setDate(null);
+      setPriority("Unimportant");
       onClose();
     }
   };
 
-  const handleDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (event.type === 'set') {
-      const currentDate = selectedDate || date
-      console.log(currentDate);
+  const handleDateChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date
+  ) => {
+    if (event.type === "set") {
+      const currentDate = selectedDate || date;
       setDate(currentDate);
     }
     setShowPicker(false);
-  }
+  };
 
   const inputRef = React.useRef<any>();
 
@@ -65,11 +77,14 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
         }, 50);
       }}
     >
-      {showPicker && <DateTimePicker
-        mode="date"
-        is24Hour={true}
-        onChange={handleDateChange}
-        value={date || new Date()} />}
+      {showPicker && (
+        <DateTimePicker
+          mode="date"
+          is24Hour={true}
+          onChange={handleDateChange}
+          value={date || new Date()}
+        />
+      )}
       {/* PriorityModal */}
       <PriorityModal
         visible={isPriorityModalVisible}
@@ -97,15 +112,25 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
           />
           <View style={styles.iconContainer}>
             <View style={styles.leftIcons}>
-              <TouchableOpacity style={styles.iconButton} onPress={() => setShowPicker(true)}>
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={() => setShowPicker(true)}
+              >
                 <Ionicons
                   name="calendar-outline"
                   size={24}
                   color={colors.taskify100}
                 />
-                <Text style={styles.iconText}>{date ? date.toLocaleDateString('en-US', { weekday: 'short' }) : ''}</Text>
+                <Text style={styles.iconText}>
+                  {date
+                    ? date.toLocaleDateString("en-US", { weekday: "short" })
+                    : ""}
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconButton} onPress={openPriorityModal}>
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={openPriorityModal}
+              >
                 <Ionicons
                   name="bookmark-outline"
                   size={24}

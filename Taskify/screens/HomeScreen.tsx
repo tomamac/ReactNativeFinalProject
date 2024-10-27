@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { colors, styles } from '../styles/styles';
+import { colors } from '../styles/styles';
 import TaskModal from '../components/TaskModal';
 import AddTaskButton from '../components/AddTaskButton';
 import HomeEmpty from '../components/HomeEmpty';
 import TaskItem from '../components/TaskItem';
+import { TasksContext } from '../components/TaskContext';
 
 const HomeScreen = () => {
+  const { tasksList, addTask, toggleTaskCompletion, deleteTask } = useContext(TasksContext)!;
   const [isModalVisible, setModalVisible] = useState(false);
-  const [tasksList, setTaskList] = useState<{ text: string; description: string; completed: boolean, priority: string }[]>([]);
-  const [taskName, setTaskName] = useState<string>('');
-  const [priority, setPriority] = useState<string>('');
 
   const openModal = () => {
     setModalVisible(true);
@@ -20,22 +19,11 @@ const HomeScreen = () => {
     setModalVisible(false);
   };
 
-  const addTask = (taskName: string, description: string , priority: string) => {
-    if (taskName.trim()) {
-      setTaskList([...tasksList, { text: taskName, description: description, completed: false, priority }]);
-      setTaskName('')
-    }
+  const handleAddTask = (taskName: string, description: string, priority: string, date: Date | null) => {
+    addTask(taskName, description, priority, date);
     closeModal();
   };
 
-  const toggleTaskCompletion = (index: number) => {
-    setTaskList(tasksList.map((task, i) => i === index ? { ...task, completed: !task.completed } : task));
-  };
-
-  const deleteTask = (index: number) => {
-    setTaskList(tasksList.filter((_, i) => i !== index));
-  };
-  
   return (
     <View
       style={{
@@ -55,25 +43,21 @@ const HomeScreen = () => {
       ) : (
         <FlatList
           data={tasksList}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <TaskItem
               task={item}
-              index={index}
               toggleTaskCompletion={toggleTaskCompletion}
               deleteTask={deleteTask}
-              priority={item.priority}
             />
           )}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.id}
         />
       )}
 
-      <TaskModal visible={isModalVisible} onClose={closeModal} onSave={addTask} />
+      <TaskModal visible={isModalVisible} onClose={closeModal} onSave={handleAddTask} />
       <AddTaskButton onPress={openModal} />
     </View>
   );
 };
-
-
 
 export default HomeScreen;

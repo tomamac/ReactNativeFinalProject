@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { colors } from '../styles/styles';
+
 
 type FilterModalProps = {
     visible: boolean;
@@ -119,13 +121,13 @@ const styles = StyleSheet.create({
   groupButton: {
     padding: 10,
     borderRadius: 5,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: colors.taskify50,
   },
   selectedButton: {
-    backgroundColor: '#4a7c59',
+    backgroundColor: colors.taskify75,
   },
   buttonText: {
-    color: '#fff',
+    color: colors.taskify100,
   },
   footer: {
     flexDirection: 'row',
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#4a7c59',
+    color: colors.taskify100,
   },
 });
 
