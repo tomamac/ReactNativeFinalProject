@@ -1,12 +1,13 @@
-import { View, Text } from "react-native";
-import React, { useState } from "react";
-import { colors, styles } from "../styles/styles";
-import HomeEmpty from "../components/HomeEmpty";
-import AddTaskButton from "../components/AddTaskButton";
-import TaskModal from "../components/TaskModal";
+import React, { useState } from 'react';
+import { View, Text } from 'react-native';
+import { colors, styles } from '../styles/styles';
+import TaskModal from '../components/TaskModal';
+import AddTaskButton from '../components/AddTaskButton';
+import HomeEmpty from '../components/HomeEmpty';
 
 const HomeScreen = () => {
-  const [isModalVisible, setModalVisible] = useState(false); // สร้างสถานะสำหรับ Modal
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [tasks, setTasks] = useState<{ name: string; description: string }[]>([]);
 
   const openModal = () => {
     setModalVisible(true);
@@ -14,6 +15,11 @@ const HomeScreen = () => {
 
   const closeModal = () => {
     setModalVisible(false);
+  };
+
+  const handleAddTask = (taskName: string, description: string) => {
+    setTasks([...tasks, { name: taskName, description }]);
+    closeModal();
   };
 
   return (
@@ -27,17 +33,22 @@ const HomeScreen = () => {
     >
       <View>
         <Text style={{ fontSize: 20 }}>Hello,</Text>
-        {/* vv replace with username? vv */}
-        <Text style={{ fontSize: 24, fontWeight: "bold" }}>John Doe</Text>
+        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>John Doe</Text>
       </View>
 
-      {/* If no tasks, show HomeEmpty */}
-      <HomeEmpty />
+      {tasks.length === 0 ? (
+        <HomeEmpty />
+      ) : (
+        tasks.map((task, index) => (
+          <View key={index} style={styles.taskCard}>
+            <Text style={styles.taskHeader}>{task.name}</Text>
+            <Text style={styles.taskHeaderText}>{task.description}</Text>
+          </View>
+        ))
+      )}
 
-      {/* แสดง TaskModal */}
-      <TaskModal visible={isModalVisible} onClose={closeModal} />
+      <TaskModal visible={isModalVisible} onClose={closeModal} onSave={handleAddTask} />
 
-      {/* ส่งฟังก์ชัน openModal ไปยัง AddTaskButton */}
       <AddTaskButton onPress={openModal} />
     </View>
   );

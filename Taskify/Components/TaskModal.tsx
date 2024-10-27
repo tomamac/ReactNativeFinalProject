@@ -13,16 +13,21 @@ import { colors } from "../styles/styles";
 interface TaskModalProps {
   visible: boolean;
   onClose: () => void;
+  onSave: (taskName: string, description: string) => void; // New prop
 }
 
-const TaskModal = ({ visible, onClose }: TaskModalProps) => {
+const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
   const [taskName, setTaskName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [selectedDay, setSelectedDay] = useState<string>("Sun.");
 
   const handleSave = () => {
-    // save task
-    onClose();
+    if (taskName.trim() && description.trim()) {
+      onSave(taskName, description); // Pass data back to parent
+      setTaskName("");
+      setDescription("");
+      onClose();
+    }
   };
 
   const inputRef = React.useRef<any>();
@@ -30,7 +35,7 @@ const TaskModal = ({ visible, onClose }: TaskModalProps) => {
   return (
     <Modal
       visible={visible}
-      animationType="slide" // ใช้ slide เพื่อให้โมดอลเลื่อนขึ้นจากล่าง
+      animationType="slide"
       transparent={true}
       onRequestClose={onClose}
       onShow={() => {
@@ -59,7 +64,6 @@ const TaskModal = ({ visible, onClose }: TaskModalProps) => {
             value={description}
             onChangeText={setDescription}
           />
-
           <View style={styles.iconContainer}>
             <View style={styles.leftIcons}>
               <TouchableOpacity style={styles.iconButton}>
@@ -70,7 +74,6 @@ const TaskModal = ({ visible, onClose }: TaskModalProps) => {
                 />
                 <Text style={styles.iconText}>{selectedDay}</Text>
               </TouchableOpacity>
-
               <TouchableOpacity style={styles.iconButton}>
                 <Ionicons
                   name="bookmark-outline"
@@ -79,7 +82,6 @@ const TaskModal = ({ visible, onClose }: TaskModalProps) => {
                 />
               </TouchableOpacity>
             </View>
-
             <TouchableOpacity
               style={styles.iconButtonRight}
               onPress={handleSave}

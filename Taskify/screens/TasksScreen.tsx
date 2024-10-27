@@ -1,16 +1,15 @@
-// TasksScreen.tsx
-
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { colors, styles } from "../styles/styles";
 import TasksEmpty from "../components/TasksEmpty";
 import AddTaskButton from "../components/AddTaskButton";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import TaskModal from "../components/TaskModal"; // นำเข้า TaskModal
+import TaskModal from "../components/TaskModal";
 
 const TasksScreen = () => {
   const [searchTasks, setSearchTasks] = useState("");
-  const [isModalVisible, setModalVisible] = useState(false); // สร้างสถานะสำหรับ Modal
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [tasks, setTasks] = useState<{ name: string; description: string }[]>([]);
 
   const openModal = () => {
     setModalVisible(true);
@@ -18,6 +17,10 @@ const TasksScreen = () => {
 
   const closeModal = () => {
     setModalVisible(false);
+  };
+
+  const addTask = (name: string, description: string) => {
+    setTasks([...tasks, { name, description }]);
   };
 
   return (
@@ -65,13 +68,19 @@ const TasksScreen = () => {
         <FontAwesome name="search" size={20} color={colors.taskify100} />
       </View>
 
-      {/* If no tasks, show TasksEmpty */}
-      <TasksEmpty />
+      {tasks.length === 0 ? (
+        <TasksEmpty />
+      ) : (
+        tasks.map((task, index) => (
+          <View key={index} style={styles.taskCard}>
+            <Text style={styles.taskHeader}>{task.name}</Text>
+            <Text style={styles.taskHeaderText}>{task.description}</Text>
+          </View>
+        ))
+      )}
 
-      {/* แสดง TaskModal */}
-      <TaskModal visible={isModalVisible} onClose={closeModal} />
+      <TaskModal visible={isModalVisible} onClose={closeModal} onSave={addTask} />
 
-      {/* ส่งฟังก์ชัน openModal ไปยัง AddTaskButton */}
       <AddTaskButton onPress={openModal} />
     </View>
   );

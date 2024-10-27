@@ -1,67 +1,39 @@
-import { Card, CheckBox } from '@rneui/base';
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-
-interface Task {
-    text: string;
-    completed: boolean;
-}
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Checkbox } from 'react-native-paper';
+import { styles } from '../styles/styles';
 
 interface TaskItemProps {
-    task: Task;
-    index: number;
-    toggleTaskCompletion: (index: number) => void;
-    deleteTask: (index: number) => void;
+  task: { text: string; completed: boolean };
+  index: number;
+  toggleTaskCompletion: (index: number) => void;
 }
 
-const TaskItem = ({ task, index, toggleTaskCompletion, deleteTask }: TaskItemProps): React.JSX.Element => {
-    return (
-        <>
-            <Card.Title>CARD WITH DIVIDER</Card.Title>
-            <View style={styles.taskItem}>
-                <CheckBox
-                    checked={task.completed}
-                    onPress={() => toggleTaskCompletion(index)}
-                />
-                <Text style={task.completed ? styles.completedTask : styles.task}>
-                    {task.text}
-                </Text>
-                <View style={styles.buttonContainer}>
-                    <Button title="Delete" onPress={() => deleteTask(index)} />
-                </View>
-            </View>
-            <Card.Divider />
-        </>
-    );
+const TaskItem: React.FC<TaskItemProps> = ({ task, index, toggleTaskCompletion }) => {
+  return (
+    <View style={styles.taskCard}>
+      <View style={styles.taskHeader}>
+        <Text style={styles.taskHeaderText}>In Progress (1 Task)</Text>
+        <TouchableOpacity>
+          <Text style={styles.taskHeaderText}>-</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.taskInfo}>
+        <Checkbox
+          status={task.completed ? 'checked' : 'unchecked'}
+          onPress={() => toggleTaskCompletion(index)}
+          color="#fff"
+        />
+        <View>
+          <Text style={styles.taskText}>{task.text}</Text>
+          <Text style={styles.taskTime}>Today At 16:45</Text>
+        </View>
+        <View style={styles.priorityBadge}>
+          <Text style={styles.priorityText}>High</Text>
+        </View>
+      </View>
+    </View>
+  );
 };
-
-const styles = StyleSheet.create({
-    taskItem: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    task: {
-        fontSize: 18,
-    },
-    completedTask: {
-        fontSize: 18,
-        textDecorationLine: 'line-through',
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        gap: 5,
-    },
-    dangerButton: {
-        backgroundColor: 'rgba(214, 61, 57, 1)',
-        height: 40,
-        width: 200,
-        marginHorizontal: 50,
-        marginVertical: 10,
-    },
-});
 
 export default TaskItem;
