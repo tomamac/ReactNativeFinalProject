@@ -6,12 +6,15 @@ import AddTaskButton from "../components/AddTaskButton";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import TaskModal from "../components/TaskModal";
 import TaskItem from "../components/TaskItem";
+import FilterModal from "../components/FliterModal";
 
 const TasksScreen = () => {
   const [searchTasks, setSearchTasks] = useState<string>('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [tasksList, setTaskList] = useState<{ text: string; description: string; completed: boolean, priority: string }[]>([]);
   const [taskName, setTaskName] = useState<string>('');
+  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
+
 
   const openModal = () => {
     setModalVisible(true);
@@ -21,7 +24,15 @@ const TasksScreen = () => {
     setModalVisible(false);
   };
 
-  const addTask = (taskName: string, description: string , priority: string) => {
+  const openFilterModal = () => {
+    setFilterModalVisible(true);
+  };
+
+  const closeFilterModal = () => {
+    setFilterModalVisible(false);
+  };
+
+  const addTask = (taskName: string, description: string, priority: string) => {
     if (taskName.trim()) {
       setTaskList([...tasksList, { text: taskName, description: description, completed: false, priority }]);
       setTaskName('')
@@ -60,6 +71,7 @@ const TasksScreen = () => {
           paddingHorizontal: 20,
         }}
       >
+        <FilterModal visible={isFilterModalVisible} onClose={closeFilterModal} />
         <TouchableOpacity
           style={{
             width: 30,
@@ -67,6 +79,7 @@ const TasksScreen = () => {
             alignItems: "center",
             justifyContent: "center",
           }}
+          onPress={openFilterModal}
         >
           <Ionicons name={"filter"} size={25} color={colors.taskify100} />
         </TouchableOpacity>
