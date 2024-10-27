@@ -6,9 +6,12 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../styles/styles";
+import DateTimePicker , { DateTimePickerEvent } from '@react-native-community/datetimepicker'
+import { current } from "@reduxjs/toolkit";
 
 interface TaskModalProps {
   visible: boolean;
@@ -19,7 +22,9 @@ interface TaskModalProps {
 const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
   const [taskName, setTaskName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [selectedDay, setSelectedDay] = useState<string>("Sun.");
+  const [selectedDay, setSelectedDay] = useState<string>("");
+  const [date, setDate] = useState<Date | null>(null);
+  const [showPicker, setShowPicker] = useState(false);
 
   const handleSave = () => {
     if (taskName.trim() && description.trim()) {
@@ -29,6 +34,15 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
       onClose();
     }
   };
+
+  const handleDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    if(event.type === 'set'){
+      const currentDate = selectedDate || date
+      console.log(currentDate);
+      setDate(currentDate);
+    }
+    setShowPicker(false);
+  }
 
   const inputRef = React.useRef<any>();
 
@@ -45,6 +59,11 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
         }, 50);
       }}
     >
+      {showPicker && <DateTimePicker
+      mode="date"
+      is24Hour={true}
+      onChange={handleDateChange}
+      value={date || new Date()}/>}
       <View style={styles.modalBackground}>
         <TouchableOpacity
           style={{ flex: 1, width: "100%" }}
@@ -66,13 +85,13 @@ const TaskModal = ({ visible, onClose, onSave }: TaskModalProps) => {
           />
           <View style={styles.iconContainer}>
             <View style={styles.leftIcons}>
-              <TouchableOpacity style={styles.iconButton}>
+              <TouchableOpacity style={styles.iconButton} onPress={() => setShowPicker(true)}>
                 <Ionicons
                   name="calendar-outline"
                   size={24}
                   color={colors.taskify100}
                 />
-                <Text style={styles.iconText}>{selectedDay}</Text>
+                <Text style={styles.iconText}>{date ? date.toLocaleDateString('en-US', { weekday: 'short' }) : ''}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.iconButton}>
                 <Ionicons

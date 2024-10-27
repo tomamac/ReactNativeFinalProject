@@ -2,7 +2,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, Container, Card, CardContent, Checkbox, FormControlLabel, BottomNavigation, BottomNavigationAction, Fab } from '@mui/material';
 import { Home, CalendarToday, List, Person, Add } from '@mui/icons-material';
 
-const TaskManagerApp: React.JSX.Element = () => {
+const TaskManagerApp: () => React.JSX.Element = () => {
   return (
     <div>
       <AppBar position="static" color="transparent" elevation={0}>
