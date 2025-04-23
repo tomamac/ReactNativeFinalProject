@@ -25,3 +25,5 @@ A comprehensive task management application built with React Native, designed to
 #### 5. Task Categorization**
    - Organize tasks into different categories
    - Efficiently manage and filter tasks based on their type
+
+![poster](https://github.com/user-attachments/assets/21d42058-cbbd-447e-9bfe-7979c2ae495e)
